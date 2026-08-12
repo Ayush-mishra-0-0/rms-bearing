@@ -1,0 +1,2 @@
+/* Interval distribution for a selected locomotive/window. */
+DECLARE @loco varchar(30)='00000',@from datetime='2025-01-01',@to datetime='2025-01-02'; WITH x AS (SELECT devicetime,DATEDIFF(second,LAG(devicetime) OVER(ORDER BY devicetime),devicetime) seconds_since_prior FROM dbo.Locoprocessdata WHERE CAST(locoid AS varchar(30))=@loco AND devicetime>=@from AND devicetime<@to) SELECT COUNT(*) rows,AVG(CAST(seconds_since_prior AS float)) mean_seconds,MAX(seconds_since_prior) max_gap_seconds FROM x WHERE seconds_since_prior IS NOT NULL;

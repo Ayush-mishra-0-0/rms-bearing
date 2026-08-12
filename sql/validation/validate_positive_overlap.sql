@@ -1,0 +1,2 @@
+/* Directly tests each documented failure against each usable timestamped table. */
+DECLARE @e TABLE(loco varchar(30),failure datetime); INSERT @e VALUES('31637','2026-06-08'),('34286','2026-07-18'); SELECT e.loco,e.failure,COUNT_BIG(p.LPSDId) rows_30d,MIN(p.devicetime) first_ts,MAX(p.devicetime) last_ts FROM @e e LEFT JOIN dbo.Locoprocessdata p ON CAST(p.locoid AS varchar(30))=e.loco AND p.devicetime>=DATEADD(day,-30,e.failure) AND p.devicetime<e.failure GROUP BY e.loco,e.failure;

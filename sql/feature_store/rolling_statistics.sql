@@ -1,0 +1,2 @@
+/* Per-minute aggregates, avoiding future leakage. */
+DECLARE @from datetime='2025-01-01',@to datetime='2025-01-02'; SELECT locoid,DATEADD(minute,DATEDIFF(minute,0,devicetime),0) minute_bucket,AVG(xtempmotor1_1) tm1_mean,MAX(xtempmotor1_1) tm1_max,AVG(xspeedloco) speed_mean,COUNT_BIG(*) rows FROM dbo.Locoprocessdata WHERE devicetime>=@from AND devicetime<@to GROUP BY locoid,DATEADD(minute,DATEDIFF(minute,0,devicetime),0);

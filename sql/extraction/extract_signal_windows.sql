@@ -1,0 +1,2 @@
+/* Narrow signal extraction for a confirmed event window. */
+DECLARE @loco varchar(30)='31637',@from datetime='2026-05-01',@to datetime='2026-06-08'; SELECT locoid,devicetime,xspeedloco,xvist_a1_1,xvist_a2_1,xvist_a3_1,xvist_a1_2,xvist_a2_2,xvist_a3_2,xtempmotor1_1,xtempmotor2_1,xtempmotor3_1,xtempmotor1_2,xtempmotor2_2,xtempmotor3_2,xatmp1oeltr_1,xatmp1oeltr_2 FROM dbo.Locoprocessdata WHERE CAST(locoid AS varchar(30))=@loco AND devicetime>=@from AND devicetime<@to ORDER BY devicetime;

@@ -1,0 +1,16 @@
+                     ┌──────────────────────────────────────────────┐
+                     │         169 RMS Telemetry Channels           │
+                     └──────────────────────┬───────────────────────┘
+                                            │
+      ┌──────────────────┬──────────────────┼──────────────────┬──────────────────┐
+      ▼                  ▼                  ▼                  ▼                  ▼
+┌───────────┐      ┌───────────┐      ┌───────────┐      ┌───────────┐      ┌───────────┐
+│ Kinematics│      │ Electrical│      │ Thermal & │      │Auxiliary &│      │ Subsystem │
+│ & Context │      │ & Power   │      │ Cooling   │      │Pneumatics │      │   Flags   │
+└─────┬─────┘      └─────┬─────┘      └─────┬─────┘      └─────┬─────┘      └─────┬─────┘
+      │                  │                  │                  │                  │
+ • locoid           • xuprim_1         • xatmp1oeltr_1     • mmcbbloct1       • bsubs01_off
+ • latitude         • xiprim_1         • xatmp1oeltr_2     • mmcbblotm1       • bslg1_off
+ • longitude        • xpn_1 / xpn_2    • xatmp2oeltr_1     • mmcbpumpc1       • bflg1_off
+ • xspeedloco       • xu_battery       • (Traction/Trafo   • mmcbpumpt1       • mcab1activ
+ • xangtrans        • xaifilts_1/2     • Oil Temps)        • mprsw8bar        • mvcb_on

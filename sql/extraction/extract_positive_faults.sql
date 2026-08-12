@@ -1,0 +1,3 @@
+/* Candidate labels. Validate each text against a SLAM report before calling it CONFIRMED. */
+DECLARE @from datetime='2024-01-01',@to datetime='2027-01-01';
+SELECT locoid,faulttime,errorinfo2 AS FaultCode,FaultText,CASE WHEN FaultText LIKE '%seiz%' OR FaultText LIKE '%locked axle%' OR FaultText LIKE '%pinion cut%' THEN 'PROBABLE' WHEN FaultText LIKE '%smoke%' OR FaultText LIKE '%hot axle%' OR FaultText LIKE '%wheel heating%' THEN 'POSSIBLE' END evidence_level FROM dbo.Lotus_LocoFaultData WHERE faulttime>=@from AND faulttime<@to AND (FaultText LIKE '%axle%' OR FaultText LIKE '%bearing%' OR FaultText LIKE '%seiz%' OR FaultText LIKE '%pinion%' OR FaultText LIKE '%smoke%' OR FaultText LIKE '%wheel%');

@@ -1,0 +1,2 @@
+/* Lists signal fields; use prior to any extraction. */
+SELECT TABLE_NAME,COLUMN_NAME,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME IN ('Locoprocessdata','Lotus_loco_process_signals_5','Lotus_loco_process_signals_sma') AND (COLUMN_NAME LIKE '%temp%' OR COLUMN_NAME LIKE '%oil%' OR COLUMN_NAME LIKE '%pressure%' OR COLUMN_NAME LIKE 'xvist%' OR COLUMN_NAME LIKE '%speed%' OR COLUMN_NAME LIKE '%volt%') ORDER BY TABLE_NAME,COLUMN_NAME;

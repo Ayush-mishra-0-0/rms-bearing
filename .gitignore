@@ -1,0 +1,35 @@
+# Python virtual environments
+rms/
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+cover/
+htmlcov/
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Environment variables
+.env
+*.env
+
+# Local monitoring/output state
+monitoring/state/
+reports/
+data/
+
+data

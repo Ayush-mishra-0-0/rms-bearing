@@ -1,0 +1,427 @@
+====================================================================
+CASE 42728 - WAG-9HC AXLE-04 LOCK (08/08/2026) - MAJOR FINDINGS
+====================================================================
+Reference copy for future use. Data source: SLAM_RDS_DB_26.04.2024 @ 10.77.36.103
+Primary telemetry: telemetry_42728_2026_rds.json.csv
+  155,095 rows, 2026-07-27 10:30 -> 2026-08-10 11:05
+  Sourced from dbo.Lotus_loco_process_signals_RDSOJson (Vendor = Equus, re-fitted device).
+====================================================================
+
+
+--------------------------------------------------------------------
+1. OFFICIAL FAILURE REPORT (SinglePageFailureReport.xls)
+--------------------------------------------------------------------
+  Date of Failure      : 08/08/2026
+  Section / Division   : NKE-CPJ, BSB / NER
+  Loco / Class         : BCNE / 42728, WAG-9HC, FREIGHT
+  Shed                 : SYHE (Dankuni)
+  Event timeline (08/08/2026):
+     19:11  arrived SBZ (in section)
+     19:26  starter given
+     19:26  LP reported AXLE LOCKED - 2nd bogie, 04 AXLE
+            -> train unable to move
+     19:32  starter put back
+  Next day (09/08/2026):
+     00:35  technician arrived
+     04:20  loco detached
+     04:45  handed over
+  Type / last maintenance:
+     ICMS / EPOTH; last minor SCH IA - 16/05/2026
+  Report generated: 10-08-2026 (deersrb)
+
+
+--------------------------------------------------------------------
+2. DATABASE REALITY CHECK (what the RMS actually holds for 42728)
+--------------------------------------------------------------------
+  * Fault tables - NO EVENTS recorded:
+      Lotus_LocoFaultData               -> 0 rows for 42728
+      Lotus_LocoFaultData_RDSOJson      -> 0 rows for 42728
+      Locofault                         -> 0 rows for 42728
+      (Other locos have 712,435 fault rows 07-10 Aug 2026.)
+      faultnum = 0 in ALL 155,095 extracted telemetry rows.
+  => No fault byte / flag was ever captured around the axle lock.
+
+  * Telemetry source found:
+      dbo.Lotus_loco_process_signals_RDSOJson (220M rows)
+      155,438 rows for 42728, range 1933-12-12 -> 2026-08-10 11:05:17
+      Vendor = EQUUS (newer schema: per-bogie IP voltages, sr voltages,
+      per-BUR currents, xvist per-axle speeds).
+
+  * Old feed (Oct-2025) = LotusWireless device, COMMISSIONING period only.
+      telemetry_42728_raw.csv = commissioning baseline, NOT evidence
+      for the 08/08/2026 failure.
+
+  * Old main table Lotus_loco_process_signals max 2026-07-08, no Aug rows
+      (contains 2044 future-dated garbage rows).
+
+
+--------------------------------------------------------------------
+3. TELEMETRY WINDOW & GAPS (CRITICAL)
+--------------------------------------------------------------------
+  Full window   : 2026-07-27 10:30  ->  2026-08-10 11:05
+  Day-wise rows : 07-27:10112, 07-28:18980, 07-29:19278, 07-30:18245,
+                  07-31:19602, 08-01:14958, 08-02:21234, 08-03:12685,
+                  08-05:4010, 08-06:4205 (sparse), 08-07:7586,
+                  08-08:1416, 08-09:2392, 08-10:393
+
+  *** CRITICAL GAP ***
+      08/08 telemetry ends    : 17:25:10
+      09/08 telemetry resumes : 14:25:11
+      -> The reported failure moment (19:26, 08/08) and the
+         technician / detach / handover (00:35-04:45, 09/08)
+         ALL FALL INSIDE THE GAP. 08/08 coverage = 15:49:10-17:25:10 only.
+
+  Motion summary (max GPS speed per day):
+      08/08 : 1336 motion rows, max 40.2 km/h (slow freight running ~30-40)
+      09/08 : max 8.5 km/h
+      10/08 : max 8.2 km/h
+
+
+--------------------------------------------------------------------
+4. THE AXLE-04 THERMAL SIGNATURE (TM1_2 = xtempmotor1_2)
+--------------------------------------------------------------------
+  NOTE: TM numbering - xtempmotor1_2 is motor #1 of bogie #2, i.e. AXLE 04
+        (axles 1-3 = bogie 1, axles 4-6 = bogie 2). This is the axle
+        reported as locked.
+
+  PROGRESSION (the money finding):
+  ------------------------------------------------------------------
+  (a) 06/08 14:00-15:00  TM1_2 runs +9 to +10 deg C ABOVE the other 5
+                          motors (mean delta +10.1, +9.3). First sign
+                          of abnormal loading on axle-04, 2 days prior.
+
+  (b) 07/08 10:13-10:34  *** OVERHEAT EPISODE ***
+                          TM1_2 spikes to 91.7 deg C peak.
+                          Delta vs other-5 mean reaches +19.7 deg C.
+                          Episode starts ~83.5 deg C (10:13), crests
+                          91.4-91.7 deg C (10:20-10:27), decays to
+                          78.5 deg C by 10:34, back to ~71 deg C by 10:38.
+                          Only 6-motor thermal anomaly in the window.
+
+  (c) 08/08 (FAILURE DAY, 15:49-17:25 pre-gap)
+                          TM1_2 runs FLAT-COLD ~36.6-40.2 deg C while
+                          ALL OTHER 5 MOTORS run 60-74 deg C.
+                          median delta = -27.7 deg C (min -33.7).
+                          -> Axle-04 motor already dead/unloaded BEFORE
+                             the reported 19:26 lock.
+                          -> 5 motors carrying load at only 30-40 km/h
+                             and reaching 60-76 deg C = abnormal pattern
+                             (axle-04 not contributing traction).
+
+  (d) 09/08 14:25+ (post-detach/handover)
+                          Loco crawls at max 8.5 km/h; TM1_2 stays cold
+                          (~39-42 deg C) while other motors run 49-58 deg C.
+                          Consistent with dragging/binding axle-04 still
+                          being moved (dead / reduced traction).
+
+  Hourly delta table (TM1_2 minus mean of other 5, excl stuck 76C):
+      06/13:00  +4.7      06/14:00  +10.1     06/15:00  +9.3
+      07/07:00  +0.5      07/08:00  +0.1      07/09:00  +1.2
+      07/10:00  +9.5 (overheat hour)           07/20:00  -13.7
+      08/16:00  -21.9     08/17:00  -29.6     <- failure-day cold-axle
+      09/15:00  -9.5      09/18:00  -18.1
+  => Tells the story: 06/08 slightly hot -> 07/08 severe overheat ->
+     08/08 dead axle (cold) while other 5 motors carry the train -> 08/08
+     19:26 reported lock -> 09/08 slow dragging move with cold axle-04.
+
+
+--------------------------------------------------------------------
+5. GPS TRACK CONTEXT
+--------------------------------------------------------------------
+  08/08 (failure day, pre-gap): loco running WNW
+      15:49 (27.0708, 84.5361)  ->  16:57 (27.1475, 84.1906) @ ~40 km/h
+      -> 17:04-17:07 slow 84.09 (station/yard area)
+      -> 17:17-17:25 (27.1931, 84.0361) @ 21-36 km/h then slowing 11 km/h
+     Track ends 17:25:10 near (27.193, 84.036) - closest telemetry point
+     to the reported failure stop (report location NKE-CPJ section).
+
+  09/08 (post-handover): slow crawl, then movement resumed
+      14:25 (27.0556, 83.7142) parked, ~8 km/h shunting south through
+      (26.99, 83.70) by 15:27; 17:17-17:26 heading east/northeast
+      (26.93, 83.78); 17:49-18:44 east (26.91, 83.84-83.96); 19:24-19:26
+      (26.9114, 83.9600) - loco being worked/marshalled after detach.
+
+  Interpretation: failure occurred in NKE-CPJ section (BSB/NER); loco
+  then dead-hauled/marshalled at very low speed (max 8.5 km/h) next day.
+
+
+--------------------------------------------------------------------
+6. OTHER OBSERVED ARTIFACTS (not failure-related)
+--------------------------------------------------------------------
+  * xvist_a3_2 (axle-06 motor speed channel) stuck at 3276 sentinel
+    for the ENTIRE 2026 dataset (different sentinel vs 6553 seen in
+    Oct-2025 commissioning data). Sensor/feed artifact.
+  * xtempmotor3_2 (axle-06 TM) stuck at 76.0 deg C clip ~100% all days.
+    Sensor artifact - excluded from all mean/delta math.
+  * 08/08 first row (15:49:10): vist 12/12/12/12/12/3276,
+    TM1_2=37 deg C vs others 38-39 - cold-axle pattern present from
+    the very start of the day's telemetry.
+  * bbur1/2/3_off all 0 during 08/08 running.
+  * On 08/08 during motion other motors reached up to 76 deg C (clipped
+    full-scale) at only ~40 km/h slow speed - abnormal loading.
+
+
+--------------------------------------------------------------------
+7. VERIFICATION SCRIPTS (case_42728/)
+--------------------------------------------------------------------
+  verify_axle4.py          - quantifies TM1_2 deltas (07/08 overheat,
+                             08/08 cold-axle). Output confirmed above.
+  timeline_check.py        - hourly TM1_2-vs-other delta + GPS path.
+  analyze_2026_overview.py - window/motion/rows overview.
+  analyze_2026_gaps.py     - time-window gap detection.
+  analyze_2026_temps.py    - per-column temp stats / clip detection.
+  analyze_2026_0708.py     - 07/08 overheat episode detail.
+  analyze_2026_aug8_full.py- full 08/08 minute dump.
+  extract_2026c.py         - the 2026 extraction worker (log: extract_2026.log).
+  Python (no pandas): C:\Users\CRIS\Desktop\ayush\rms-bearing\rms\Scripts\python.exe
+
+
+====================================================================
+DEEPER PHYSICS TESTS (Test B/C/D/E/F) - matched-condition analysis
+====================================================================
+  Scripts: test_F_transition.py, test_B_plus.py, test_E.py
+  These address: "does the data PROVE bearing friction caused the current?"
+
+  TEST C - AXLE-04 SPEED vs OTHER AXLES (highest priority, DONE):
+  * xvist_a1_2 = axle-04 speed channel. Scale: 07-27..08-02 spans 0-6553
+    (raw/other scale, NOT interpretable); 08-03..08-10 is clean integer
+    km/h 0-58 (interpretable).
+  * 08/08 15:49-17:25 (pre-gap): axle-04 speed tracks axles 1/2/3/5
+    EXACTLY at every row (e.g. loco 50.3 -> axle 12/12/12/12/12 etc).
+    -> axle-04 was STILL ROTATING during the pre-failure window. NOT yet
+       locked/seized at that time. Motor cold but wheelset turning.
+  * 09/08 (day after lock): axle-04 speed channel = 3276 (dead sentinel)
+    for ALL 2392 rows, while axles 1/2/3/5 read valid 0-15 km/h crawl.
+    -> axle-04 speed signal DIED AFTER the incident (post-lock / sensor
+       removed-damaged). Consistent with mechanical lock occurring
+       between 08/08 17:25 and the 19:26 report.
+  * axle-06 (xvist_a3_2) stuck at 3276 sentinel ALL days = feed artifact.
+  => NO kinematic proof of pre-lock axle-04 divergence; instead the
+     speed channel proves axle was still rotating pre-gap and went dead
+     post-incident.
+
+  TEST F - WHEN did TM1_2 go hot->cold? (pinpointed):
+  * 06/08 14:30-15:00: TM1_2 +16.7/+14.3/+9.5 deg C (hot episodes),
+    also 07:30 +6.3, 13:30 +5.2. First abnormal day.
+  * 07/08 09:30-10:27: main overheat, 91.7 deg C peak (dT +16.9 at 10:15).
+  * 07/08 11:00-19:15: NORMAL again (dT ~0 to -1.2, all six ~38-42 C,
+    loco idling/light).
+  * 07/08 19:36-19:46: loco starts a traction run (v 0->35 km/h, Ip up
+    to 71 A); the OTHER 5 motors warm 42->55 C while TM1_2 stays
+    FLAT at 38.7-38.9 C.
+  * 07/08 19:46:09: COLD STATE (dT < -10) becomes sustained.
+  * 08/08 15:58 onward: cold state continues (dT -15.8..-31.8).
+  * 09/08: cold state continues (dT -11 to -18.5).
+  => The hot->cold transition happened ~24 h BEFORE the reported lock,
+     on the evening of 07/08 (first loaded run after the overheat).
+     "Loss of thermal contribution of axle-04" began 07/08 ~19:46, not
+     on the failure day itself.
+
+  TEST B - PRIMARY CURRENT RESIDUAL vs BASELINE f(v,a) model:
+  * Baseline I=f(v,a) built from 27-Jul..03-Aug (v bins 0-10..50+,
+    a bins <-0.3..>0.3 m/s2, traction-active only). I_excess = I_obs
+    - baseline.
+  * RESULTS (median I_excess, A):
+     06-Aug: v10-20 +6.8, v40-50 +41.1, v50+ +25.9  <- high-speed bins UP
+     07-Aug: v10-20 +20.4, v20-30 +8.3, v30-40 +8.3, v50+ +21.2  <- UP across bins
+     08-Aug: v10-20 -1.5, v20-30 -13.6, v30-40 +9.5, v40-50 -21.7, v50+ -17.6
+             <- NOT elevated vs baseline at matched (v,a)
+  * READ: on 06/08 and 07/08 the loco demanded MORE primary current than
+    its own baseline at comparable speed+acceleration -> consistent with
+    increased resistance. On 08/08 aggregate current was NOT elevated vs
+    baseline at matched (v,a) -> the train was running no harder; instead
+    the LOAD was redistributed (see Test E). Caveat: 06/08 and 08/08
+    upper-speed bins have small n (32/13); v30-40 a<-0.3 baseline bin
+    has n=0 (model gap).
+
+  TEST D - CURRENT -> TEMPERATURE LAG (07/08 09:30-11:30):
+  * corr(dT_04, Ip) grows with positive lag: tau=0: +0.667,
+    tau=+60s: +0.853. Autocorr of dT at same lags: 1.0 -> 0.849.
+  * At tau=+60 the dT-vs-Ip correlation (0.853) is ABOVE the dT
+    autocorrelation (0.849) -> consistent with current leading
+    temperature (electrical effort precedes heating), supporting a
+    load/heating mechanism. Both series are smooth/slow so correlation
+    is dominated by the overall ramp; interpret as directional only.
+
+  TEST E - LOAD REDISTRIBUTION (temp vs current, speed>20, lte=1):
+  * 07/08 (overheat stage): TM1_2 RISES with current
+       Ip 60-80  -> TM1_2 68.2 C (dT +6.5)
+       Ip 80-120 -> TM1_2 84.9 C (dT +15.9)
+     => axle-04 motor still coupled to traction effort.
+  * 08/08 (cold stage): TM1_2 FLAT ~38-40 C at EVERY Ip bucket
+       (0-20 through 120+) while other5 runs 57-72 C, dT -19..-32
+     => axle-04 motor thermally DECOUPLED from current; the other 5
+        motors carry the traction load (their temps elevated).
+  * BASELINE: all six track together (dT +0.8..+2.5 across buckets).
+  => This is the strongest evidence of the state transition: on 07/08
+     the anomalous motor follows current; on 08/08 it stops following.
+
+  PHYSICS-LABEL LANGUAGE (per review):
+  * Do NOT say "dead axle" / "bearing failed" from temperature alone.
+    Use: "loss-of-thermal-contribution state" / "low-thermal-load state".
+  * Do NOT claim "current increased because bearing friction increased".
+    Claim only: aggregate primary current was elevated vs baseline on
+    06/08 and 07/08 at matched (v,a); axle-04 speed proved still rotating
+    on 08/08; axle-04 temp decoupled from current on 08/08.
+  * Energy metric: xenergymwh_ec is a cumulative counter; only safe
+    statement is "counter changes more rapidly during the failure-day
+    running window" - units NOT verified. Do not quote 12665 kWh/min.
+
+====================================================================
+COUPLED-SIGNAL ANALYSIS (friction -> resistance -> traction effort -> temp)
+====================================================================
+  Script: coupled_analysis.py (tables) + make_coupled_report.py (SVG charts)
+  Output: coupled_report_42728.html  (8 SVG charts, self-contained)
+
+  CHAIN TESTED: bearing/axle friction increase should show up as
+     more tractive effort/current to hold speed, + speed sag, + TM heat
+     (tested against TM1_2/axle-04 vs the other 5 motors).
+
+  COLUMN COVERAGE NOTES (important):
+  - xiprim_1 (primary current), xuiz1_bur1/2/3 (per-converter DC-link
+    current), xspeedloco, ltedemand: FULL coverage all days.
+  - bg1tm*/bg2tm*_ipvoltage (per-motor input voltage), bur*_opcurrent:
+    ONLY from 05-Aug onward (newer feed), but cover all key windows.
+  - bg2tm1_ipvoltage == bg2tm2 == bg2tm3 == ~1713 V always -> per-motor
+    IP voltage is just the shared DC-link, NOT a per-axle effort signal.
+    PER-AXLE TEMPERATURE IS THE ONLY PER-AXLE LOAD DISCRIMINATOR.
+
+  TEST 1 - median primary current (xiprim_1) vs speed bucket,
+           traction-active only (ltedemand=1):
+    period           bucket   n     Ip med  Ip p90   TM1_2  other5  dT
+    06-Aug           0-10     631   13.2    22.0     50.6   49.1   +1.5
+    07-Aug           0-10     266   14.5    27.8     39.9   40.2   -0.3
+    08-Aug           0-10     169   12.7    16.6     37.6   53.4  -15.8
+    BASELINE 27Jul-3Aug 0-10 7603  12.5    20.8     45.9   45.9   -0.0
+    06-Aug           10-20    307   27.3    42.7     48.0   48.7   -0.7
+    07-Aug           10-20    107   41.0    54.4     43.5   43.1   +0.4
+    08-Aug           10-20    280   19.0    27.1     38.9   60.0  -21.1
+    BASELINE         10-20   5603   21.0    44.9     50.3   50.7   -0.4
+    06-Aug           20-30    274   29.5    67.9     53.0   50.6   +2.4
+    07-Aug           20-30    273   43.2    67.9     44.2   53.8   -9.7
+    08-Aug           20-30     35   18.6    23.7     40.0   71.8  -31.9
+    BASELINE         20-30   3513   37.4    81.3     56.8   56.0   +0.8
+    06-Aug           30-40    266   26.9    63.5     69.1   54.9  +14.2
+    07-Aug           30-40     69   65.7    74.5     67.5   61.3   +6.2
+    08-Aug           30-40     23   56.2    61.3     39.1   64.8  -25.7
+    BASELINE         30-40   2415   58.8   127.7     57.0   56.1   +0.9
+    06-Aug           40-50     32   88.4    93.0     60.4   60.5   -0.1
+    08-Aug           40-50     13  120.6   126.7     39.9   69.3  -29.5
+    BASELINE         40-50   2435   60.1   154.8     59.7   57.5   +2.2
+
+    KEY READ:
+    - 07-Aug at 30-40 km/h: Ip med 65.7 > baseline 58.8 while axle-04 is
+      the hot motor -> thermal anomaly COUPLED with higher primary current.
+    - 08-Aug at 40-50 km/h: Ip med 120.6 vs baseline 60.1 (+100%, n=13)
+      with TM1_2 cold -> remaining 5 motors drawing extra current. Small n,
+      directional not conclusive.
+
+  TEST 2 - 07-Aug 10:00-10:40 thermal event, aligned signals:
+    - 10:01-10:16: loco at 12-57 km/h, Ip 42-92 A, TM1_2 climbing 63->86 C.
+    - 10:13-10:27: TM1_2 83->91.7 C while loco 53-55 km/h, Ip ~70-92 A.
+    - 10:27 (peak 91.7): speed decayed to ~40 km/h, Ip ~10 A.
+    - 10:34: speed 0, DC-link dropped to ~1520 V, TM1_2 79 C -> stopped.
+    => Speed sag at thermal peak = friction not fully compensated.
+
+  TEST 3 - 08-Aug 15:49-17:25 pre-failure, aligned signals:
+    - TM1_2 flat 36.6->40.2 C the whole session.
+    - Other 5 motors 38->74 C; loco accelerates to 60-73 km/h,
+      Ip up to 130-144 A (17:17-17:18, DC-link 2180 V accel peak).
+    => exactly the 5-other-motors-carrying-the-train state before the lock.
+
+  TEST 4 - bg2tm* per-motor input voltage, 08-Aug:
+    bg1tm1=1713, bg2tm1=1713, bg2tm2=1713, bg2tm3=1713 (medians all equal)
+    -> confirms IP voltage is shared DC-link, NOT per-axle effort.
+
+  TEST 5 - primary current at speed 20-40 km/h, comparable conditions:
+    07/08 10-11 (event hr): Ip med 61.0 p90 70.3  TM1_2 66.9  other5 61.0  dT +5.9
+    07/08 14-20 (after):     Ip med 39.6 p90 52.0  TM1_2 38.8  other5 46.1  dT -7.3
+    08/08 15-17 (pre-fail):  Ip med 23.2 p90 58.3  TM1_2 39.1  other5 64.8  dT -25.7
+
+  TEST 6 - energy consumption rate (xenergymwh_ec slope) during running:
+    05/08: 2944 kWh/min (1.0x)
+    06/08: 6263 kWh/min (2.1x)
+    07/08: 4563 kWh/min (1.55x)
+    08/08: 12665 kWh/min (4.3x)  <-- failure day, but only 87 running-min
+    => energy per running-minute climbs as the problem develops; coarse
+       cumulative counter, use directionally.
+
+  COUPLED-SIGNAL CONCLUSION:
+    The hot->cold transition of TM1_2 (06/08 +9-10C, 07/08 +19.7C spike to
+    91.7C with speed sag, 08/08 -27.7C cold while other 5 at 60-74C and
+    primary current/energy high) is consistent with: axle-04 friction rises
+    -> traction system compensates (higher current/temp, speed sag on 07/08)
+    -> axle becomes mechanically constrained -> its motor contribution is
+    dropped by the control/protection (TM1_2 goes cold, 08/08) -> the
+    remaining 5 motors carry the whole train (their temps 60-74C, elevated
+    Ip and energy rate) -> 19:26 axle-04 locked.
+    NOTE: per-axle current is not recorded; this inference rests on
+    per-axle temperature + aggregate current/speed/energy. Oct-2025 data
+    is commissioning baseline only.
+
+====================================================================
+TASK 7 - EVENT RECONSTRUCTION 07/08 19:15 -> 19:50
+====================================================================
+  Output: task7_report_42728.html (6-panel aligned SVG + table + analysis)
+  Source: 462 rows, 1-s cadence, telemetry_42728_2026_rds.json.csv
+
+  WINDOW FACTS (medians per segment):
+  Segment        TM1_2  other5  dT     Ip     v     a04   xang  lte  mvcb
+  Before 19:36   39.1   38.8   +0.3   9.8    0     0     0     0    1
+  19:36-19:46    38.9   44.9   -6.1   20.4   27.6  27.0  27.8  1    1
+  After 19:46    38.7   55.1   -16.5  9.6    29.3  29.0  0     0    1
+  faultnum = 0 throughout. All isolation/cutout bits 0 throughout.
+
+  EVENT SEQUENCE (all times 07/08):
+    19:15-19:35 idle. v=0, all axles 0, Ip~8-10 A. All six TM drift
+        down together 39.4->39.0. One 15-s shunt 19:27:42-19:27:55 to
+        2.5 km/h - ALL axles turn together (a1=a04=a5), no divergence.
+    19:36:42 FIRST LOADED RUN. v 14->33.6, xang to 50 (full notch),
+        Ip up to 81 A. TM1_2 stays FLAT 38.8-39.0 while other5 rises
+        42.8->47.1. Axle speeds all identical.
+    19:38:12-19:39:27 coast. other5 continues 44->46 (thermal inertia),
+        TM1_2 flat.
+    19:39:29-19:40:45 second throttle (xang 26-36, Ip to 45 A).
+        other5 45.9->47.1, TM1_2 flat.
+    19:40:45 -> 19:46:09  TELEMETRY GAP (~5.4 min). At resume v=36.1
+        coasting, other5=54.6 (rose 47->55 INSIDE the gap), TM1_2=38.7.
+    19:46:09-19:46:55 decel, lbe=1 (brake demand) 19:46:32-19:46:52.
+        TM1_2 flat, other5 54.6->55.2.
+    19:46:55+ v 28->23 km/h still decel; TM1_2 38.7, other5 55.4.
+
+  HYPOTHESIS ASSESSMENT:
+    H-A sensor fault: NOT supported. TM1_2 tracked ambient during idle
+        (in phase with other5), read 91.7 C that morning, and holds a
+        smooth ~38.8 through full-notch load - a live channel reading a
+        thermally unloaded motor, not a stuck channel (compare axle-06
+        speed sentinel 3276 or xtempmotor3_2 stuck at 76.0).
+    H-B electrical/control isolation: no bit evidence but CONSISTENT.
+        No isolation/cutout/fault bit toggles in this feed, yet the
+        flat-under-load signature is exactly a motor-cut-out state. The
+        feed exposes no per-motor cutout bit -> absence of telemetry is
+        not proof either way.
+    H-C mechanical: morning overheat 91.7 + current-positive residual
+        (TEST B) fits rising friction; flat TM + normal aggregate current
+        + still-rotating axle fits a motor that has stopped contributing.
+
+  CONCLUSION:
+    TM1_2 was ALREADY thermally decoupled at the FIRST loaded run of this
+    window (19:36) - it never heated under load while the other five did.
+    The "19:46 dT<-10" threshold is a crossing driven by OTHER motors
+    reaching ~55 C (partly inside the 19:40-19:46 data gap), not a second
+    axle-04 event. No status/control/fault bit changed; axle-04 kept
+    rotating at train speed throughout. Statement: after the 07/08 morning
+    overheat, axle-04's motor stopped responding thermally to traction
+    load - loss-of-thermal-contribution state. Mechanism (electrical
+    cutout vs mechanical) not separable from captured signals.
+
+====================================================================
+SUMMARY LINE
+====================================================================
+  Axle-04 (TM1_2) thermal progression 06->09 Aug 2026: slightly hot on
+  06/08, severe overheat to 91.7 deg C on 07/08, flat-cold (dead) on
+  08/08 while the other 5 motors carried the train at 60-74 deg C, then
+  reported axle lock at 19:26 on 08/08. The incident moment itself is
+  inside a telemetry gap (08/08 17:25 -> 09/08 14:25); no fault codes
+  were captured. Oct-2025 commissioning data is baseline only.
+====================================================================
