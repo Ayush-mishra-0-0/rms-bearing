@@ -13,6 +13,7 @@ __pycache__/
 cover/
 htmlcov/
 build/
+
 dist/
 *.egg-info/
 pip-wheel-metadata/
@@ -26,6 +27,10 @@ pip-wheel-metadata/
 # Environment variables
 .env
 *.env
+
+# Large telemetry files
+case_42728/telemetry_42728_2026_rds.json.csv
+case_42728/telemetry_42728_raw.csv
 
 # Local monitoring/output state
 monitoring/state/
