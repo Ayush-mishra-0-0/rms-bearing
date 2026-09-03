@@ -1,0 +1,32 @@
+# Single experiment config for v0. Split later if needed.
+seed: 42
+run_name: mlstm_iforest_v0
+
+data:
+  table: dbo.Lotus_loco_process_signals
+  resample: 1min            # 1Hz -> 1min median to match 40min/6min paper windows on Windows CPU
+  lookback_min: 40
+  horizon_min: 6
+  target: xtempmotor_max    # max of 6 xtempmotor*_*
+  covariates: [xspeedloco, xiprim_1, xuprim_1, ltedemand, xtempmotor1_1, xtempmotor2_1, xtempmotor3_1, xtempmotor1_2, xtempmotor2_2, xtempmotor3_2]
+  train_locos: healthy_fleet # 845 locos minus 37282/30532/30751, sampled
+  val_locos: [37282, 30532] # only usable positives, validation only
+
+model:
+  type: mlstm
+  hidden_size: 64
+  num_layers: 3             # paper compared 3/4/5, start 3
+  dropout: 0.1
+  epochs: 50
+  lr: 0.001
+  batch_size: 256
+
+deviation:
+  ewma_span: 5              # smooth transients, paper's false-alarm guard
+  score: abs_residual
+
+iforest:
+  n_estimators: 200
+  max_samples: 256
+  contamination: 0.01
+  threshold_quantile: 0.99  # alarm if score > q99 on healthy val

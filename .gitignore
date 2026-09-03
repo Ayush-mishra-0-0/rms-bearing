@@ -35,6 +35,15 @@ case_42728/telemetry_42728_raw.csv
 # Local monitoring/output state
 monitoring/state/
 reports/
-data/
 
-data
+# Telemetry data: ignore dumps, keep contracts + manifests versioned
+data/raw/
+data/interim/*.parquet
+data/processed/*.csv
+!data/processed/ground_truth_failure_registry.csv
+!data/processed/owner_failure_classification.csv
+!data/processed/fault_time_reconciliation_candidates.csv
+!data/interim/.gitkeep
+experiments/*/artifacts/
+experiments/*/*.pt
+*.log

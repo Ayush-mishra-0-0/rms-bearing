@@ -1,0 +1,2 @@
+FailureID,Loco,FailureDate,FailureTimestamp,TimestampPrecision,Label,Confidence,Window,HorizonHours,WindowStart,WindowEnd,Purpose
+4635100,37282,10/12/2024,2024-12-10 05:00:00,EXACT,LEVEL_1,HIGH,7d,168,2024-12-03 05:00:00,2024-12-10 05:00:00,Long-term degradation

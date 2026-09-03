@@ -1,0 +1,27 @@
+# Arm B — Martinez 1Hz thermal (Martinez-Llop & Sanz-Bobi 2022). Thermal-only, cheap.
+seed: 42
+run_name: martinez_thermal_v0
+
+data:
+  table: dbo.Lotus_loco_process_signals
+  resample: 1min            # v0: 1min like Arm A for fair compare; Arm B-native 1s comes after extraction lands
+  lookback_min: 120         # longer thermal history; paper flags up to 2d ahead
+  horizon_min: 10
+  target: xtempmotor_max
+  covariates: [xspeedloco, xtempmotor1_1, xtempmotor2_1, xtempmotor3_1, xtempmotor1_2, xtempmotor2_2, xtempmotor3_2]
+  # NOTE: no power covariates on purpose — tests whether thermal+speed alone matches Arm A
+  train_locos: healthy_fleet # same split as Arm A
+  val_locos: [37282, 30532]
+
+model:
+  type: dense_predictor    # small feed-forward/LSTM temp predictor; residual threshold, no iForest
+  hidden_size: 32
+  num_layers: 2
+  epochs: 30
+  lr: 0.001
+  batch_size: 512
+
+deviation:
+  ewma_span: 5
+  score: abs_residual
+  threshold_quantile: 0.99  # plain residual threshold (cheaper than iForest)

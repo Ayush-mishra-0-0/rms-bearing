@@ -1,0 +1,42 @@
+FailureID,Loco,FailureDate,Defect,RegistryLabel,Classification,InRegistry,TelemetryRows_plus_minus5d,TelemetryRows_plus_minus1d,TelemetryNearFailure
+4375493,37361,03/08/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4145344,30532,04/04/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,8076,3908,Y
+4199130,32004,04/05/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4315308,30514,04/07/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4635100,37282,10/12/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,359439,130047,Y
+4453192,33636,11/09/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4159690,33574,13/04/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4643188,32515,13/12/2024,Outer Labrynth Displaced/ Rubbing (Reqd. to add in Bearing),,REJECT,N,0,0,N
+4276998,30486,14/06/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4645469,43368,14/12/2024,Outer Labrynth Displaced/ Rubbing (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4337394,30354,15/07/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4460219,39114,15/09/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4402640,37038,16/08/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4522226,32562,16/10/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4648950,43016,16/12/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4223199,37491,17/05/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4464149,39026,17/09/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4463918,33734,17/09/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4463548,30642,17/09/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4587247,37508,17/11/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4650283,37619,17/12/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4649392,30751,17/12/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,52546,4395,Y
+4591315,41733,18/11/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4590688,37373,18/11/2024,Outer Labrynth Displaced/ Rubbing (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4408770,32114,19/08/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4659783,37374,21/12/2024,Rotor labyrinth overheated / broken,,REJECT,N,0,0,N
+4293186,31327,22/06/2024,Outer Labrynth Displaced/ Rubbing (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4178149,37271,23/04/2024,Outer Labrynth Displaced/ Rubbing (Reqd. to add in Bearing),LEVEL_2,LEVEL_2,Y,0,0,N
+4536532,32054,23/10/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4297396,33696,24/06/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4479286,37044,24/09/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4538631,37544,24/10/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4237983,32134,25/05/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4541444,33516,25/10/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4361526,37002,27/07/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4609179,30675,27/11/2024,TM bearing seized,LEVEL_1,LEVEL_1,Y,0,0,N
+4610095,30319,27/11/2024,Outer Labrynth Displaced/ Rubbing (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4306991,33700,29/06/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4190943,37118,30/04/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4247443,37353,30/05/2024,DE Bearing Seize) (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N
+4616355,30341,30/11/2024,Outer Labrynth Displaced/ Rubbing (Reqd. to add in Bearing),LEVEL_1,LEVEL_1,Y,0,0,N

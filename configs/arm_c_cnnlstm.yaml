@@ -1,0 +1,30 @@
+# Arm C — CNN-LSTM SCADA (Zhang et al. 2023). Correlation-selected wide inputs, RMSE health index.
+seed: 42
+run_name: cnnlstm_scada_v0
+
+data:
+  table: dbo.Lotus_loco_process_signals
+  resample: 1min
+  lookback_min: 40
+  horizon_min: 6
+  target: xtempmotor_max
+  # v0 wide set (~20): Arm A covariates + physics + energy + pneumatics; prune by correlation after extraction
+  covariates: [xspeedloco, gpsspeed, xiprim_1, xuprim_1, ltedemand, lbedemand, mtrcctract1,
+    xtempmotor1_1, xtempmotor2_1, xtempmotor3_1, xtempmotor1_2, xtempmotor2_2, xtempmotor3_2,
+    Temp_Diff_Motor_1, Temp_Gradient, xenergymwh_ec, xadrucktr_1, xaibur, xu_battery]
+  train_locos: healthy_fleet # same split as Arm A
+  val_locos: [37282, 30532]
+
+model:
+  type: cnn_lstm
+  cnn_filters: 32
+  hidden_size: 64
+  num_layers: 2
+  epochs: 50
+  lr: 0.001
+  batch_size: 256
+
+deviation:
+  ewma_span: 5
+  score: rmse             # RMSE(actual vs predicted) as health index, per paper
+  threshold_quantile: 0.99
