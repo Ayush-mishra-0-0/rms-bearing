@@ -469,9 +469,26 @@ CLOSEOUT 03-Sep-2026 - case analysis DONE, predictive conclusion OPEN
   baseline f(v,a) medians 27-Jul..03-Aug, lte=1; per-period
   med/p10-p90/IQR/tails, KS D vs pooled baseline, dT alongside,
   hourly rolling med/IQR 06-08 Aug).
-  Status 03-Sep-2026: script NOT yet executed here - the telemetry CSV
-  (telemetry_42728_2026_rds.json.csv, 155,095 rows) and a Python
-  runtime are both absent from this checkout. Run it where the
-  extraction lives, then take the pattern to other axle-lock cases
+  Status 03-Sep-2026 (EXECUTED): ran case_42728/residual_distribution_42728.py
+  in case_42728/ against re-extracted telemetry_42728_2026_rds.json.csv
+  (156,089 rows read, baseline bins 28/30, 27-Jul..03-Aug lte=1).
+  Extraction: monitoring/.env -> dbo.Lotus_loco_process_signals_RDSOJson,
+  LocoId 42728, days 27-31 Jul + 01-03,05-10 Aug (no 04 Aug data).
+  Scripts: case_42728/extract_42728_full.py + extract_42728_resume.py.
+  Rerun total 156,088 vs old 155,095 (+993 late-arriving 10-Aug rows).
+  Per-period r_t = I_obs - Ihat(v,a), traction-active only:
+    period                 n    med     p10     p25     p75     p90    IQR   P(|r|>30)  KS_D  dT_med
+    BASELINE 27Jul-03Aug 26340  +0.0  -23.4    -8.1   +13.2   +39.3   21.3   0.205      --    +0.7
+    06-Aug                1751  +1.2  -19.2    -5.4   +13.0   +30.3   18.4   0.140      0.062 +0.9
+    07-Aug                 893  +8.1   -5.4    -0.7   +21.7   +26.6   22.4   0.075      0.277 +0.5
+    07/08 10-11 event-hr   333 +22.0   +4.1   +18.5   +24.4   +27.6    5.9   0.075      0.563 +15.5
+    07/08 14-20 post       374  -0.5  -11.2    -5.1    +7.1   +14.4   12.2   0.021      0.176 -4.7
+    08/08 15-17 pre-fail   968  -4.9  -21.5   -17.6    +2.9    +9.8   20.5   0.054      0.203 -21.8
+  Hourly rolling (traction-active, n>=10): 06/06 02:00 +34.9 (n=67),
+  03:00 +30.3 (n=69, small-n directional); 07/07 10:00 +22.0 IQR 5.9
+  (n=333); 08/08 16:00 -6.3 IQR 19.8 (n=801).
+  Reading: residual shift is brief/localized to 07/08 10-11h with matching
+  thermal +15.5C, resets post-event, cold pre-fail -21.8C. Supports claims
+  2/3, not 5/6/7. Next: take this exact pattern to other axle-lock cases
   and healthy controls.
 ====================================================================
