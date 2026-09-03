@@ -425,3 +425,53 @@ SUMMARY LINE
   inside a telemetry gap (08/08 17:25 -> 09/08 14:25); no fault codes
   were captured. Oct-2025 commissioning data is baseline only.
 ====================================================================
+CLOSEOUT 03-Sep-2026 - case analysis DONE, predictive conclusion OPEN
+====================================================================
+  FINAL FINDING (recorded):
+    42728 shows a measurable pre-lock thermal and aggregate-electrical
+    behavioural change, with TM1_2 thermal decoupling approximately one
+    day before the reported axle lock. The evidence supports an
+    electrical/thermal precursor hypothesis, but not a bearing-specific
+    electrical fault diagnosis or causal mechanism. Next step is testing
+    that TM-abnormality -> thermal excursion -> abnormal load response
+    sequence on the other 2025 axle-lock cases.
+
+  What we can claim:
+    1. Thermal precursor - YES (TM1_2 diverges; 06/08 +9-10C, 07/08
+       91.7C peak dT +19.7C, 08/08 median dT -27.7C cold).
+    2. Electrical/thermal coupling change - YES (Test E: 07/08 TM1_2
+       rises with current; 08/08 flat 38-40C at every Ip bucket while
+       other5 runs 57-72C).
+    3. Aggregate electrical abnormality - YES (Test B I_excess vs own
+       f(v,a) baseline elevated 06/08 and 07/08 at matched speed+accel).
+    4. Early warning potential - YES (abnormal state ~1 day before the
+       19:26 08/08 lock; hot->cold transition ~07/08 19:36-19:46).
+  What we cannot claim:
+    5. Causal mechanism - NO (cutout vs mechanical not separable;
+       fault/cutout bits never changed; failure inside the 08/08
+       17:25 -> 09/08 14:25 gap).
+    6. Bearing-specific electrical signature - NO (no high-frequency
+       waveform; no BPFO/BPFI/BSF analysis).
+    7. General predictive capability - NO (n=1; needs other cases plus
+       healthy controls).
+  Negative results retained: faultnum=0 all rows; 0 fault-table rows;
+  bbur/bstb isolation bits 0; axle-04 rotating pre-gap, speed channel
+  dead sentinel 3276 post-incident; aggregate current not monotonic;
+  bg2tm* ~1713V shared DC-link, not per-axle effort; xvist_a3_2 and
+  xtempmotor3_2 artifacts excluded.
+  Hypothesis chain (Shang as principle, not algorithm):
+    Expected electrical behaviour -> residual -> thermal response ->
+    cross-motor deviation.
+  Remaining experiment for this case: residual-distribution statistics
+  only (does the distribution of r_t = I_t - Ihat_t change around the
+  abnormal period; no spectral kurtosis, no new model, no pipeline).
+  Script: case_42728/residual_distribution_42728.py (stdlib only;
+  baseline f(v,a) medians 27-Jul..03-Aug, lte=1; per-period
+  med/p10-p90/IQR/tails, KS D vs pooled baseline, dT alongside,
+  hourly rolling med/IQR 06-08 Aug).
+  Status 03-Sep-2026: script NOT yet executed here - the telemetry CSV
+  (telemetry_42728_2026_rds.json.csv, 155,095 rows) and a Python
+  runtime are both absent from this checkout. Run it where the
+  extraction lives, then take the pattern to other axle-lock cases
+  and healthy controls.
+====================================================================
