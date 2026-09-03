@@ -1,0 +1,39 @@
+﻿Rows: 490188  loco=37282  failure=2024-12-10 05:00:00  suspect=xtempmotor3_2
+Baseline bins covered: 26/30
+RESIDUAL r_t = I_obs - Ihat(v,a), traction-active only (BASELINE row in-sample ref)
+period                        n      med      p10      p25      p75      p90      IQR P(|r|>30)
+BASELINE 01Dec-07Dec      48810     +0.0    -23.2     -8.3     +9.5    +42.0     17.8     0.190
+08-Dec                        0  (no matched rows)
+09-Dec                    22783     +1.7    -22.5     -8.3    +14.4    +73.7     22.7     0.235
+10-Dec pre-fail            2080     +2.2     -8.5     -2.0    +16.1    +41.3     18.1     0.165
+KS-D vs pooled BASELINE (no p-value):
+  08-Dec                   n=0     D=  nan  <-- n<30, directional only
+  09-Dec                   n=22783 D=0.079
+  10-Dec pre-fail          n=2080  D=0.173
+dT = suspect - other5 mean (deg C):
+  BASELINE 01Dec-07Dec     n=46731 dT med=  +2.2 IQR=  2.1
+  09-Dec                   n=17448 dT med=  +2.5 IQR=  2.7
+  10-Dec pre-fail          n=2080  dT med=  +0.5 IQR=  3.2
+Rolling hourly residual med/IQR:
+  09/12 05:00 n=820   med=   -3.9 IQR=   2.7
+  09/12 06:00 n=452   med=   -2.7 IQR=  12.7
+  09/12 07:00 n=1494  med=   -6.1 IQR=  23.0
+  09/12 08:00 n=1465  med=   -0.7 IQR=  24.2
+  09/12 09:00 n=1378  med=   +2.9 IQR=  22.2
+  09/12 10:00 n=1384  med=   +2.2 IQR=  18.6
+  09/12 11:00 n=1114  med=   +2.9 IQR=  17.3
+  09/12 12:00 n=1132  med=   +6.8 IQR=  14.2
+  09/12 13:00 n=1134  med=   +3.9 IQR=  21.2
+  09/12 14:00 n=1505  med=   +4.2 IQR=  31.3
+  09/12 15:00 n=793   med=   -4.4 IQR=  19.3
+  09/12 16:00 n=1640  med=   +3.2 IQR=  13.2
+  09/12 17:00 n=919   med=  +20.5 IQR= 100.1
+  09/12 18:00 n=1542  med=   +0.0 IQR=  20.3
+  09/12 19:00 n=876   med=  +22.3 IQR=  54.0
+  09/12 20:00 n=1974  med=  -14.2 IQR=  27.1
+  09/12 21:00 n=817   med=   +8.8 IQR=  33.0
+  09/12 22:00 n=1393  med=   +0.5 IQR=  20.5
+  09/12 23:00 n=951   med=   +1.7 IQR=  16.6
+  10/12 00:00 n=776   med=   +1.2 IQR=   6.6
+  10/12 01:00 n=1261  med=   +7.1 IQR=  28.1
+  10/12 04:00 n=43    med=   -2.0 IQR=   7.3

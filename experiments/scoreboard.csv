@@ -1,1 +1,4 @@
 arm,window,missed,false_warning_pct,lead_time_min,train_time_s,infer_time_s,config_hash,notes
+A_mlstm_smoke2_healthy2loco,37282_10d_7d-anchor,0,na,11315,na,na,a279d359cd26,critical 02-Dec 08:25 (189h lead); candidate/warning also fire day-1 on healthy windows — cross-loco offset suspected not precursor; smoke scale train=2 locos
+A_mlstm_smoke2_healthy2loco,30532_sparse_anchor,0,na,2652,na,na,a279d359cd26,critical 02-Apr (44h); rules candidate 03-Apr 01:08 (28h, no warning/critical); sparse dq_gap-heavy
+A_mlstm_smoke2_healthy2loco,healthy_Nov_AB_FAR-pool,na,100pct-windows-candidate,na,na,na,a279d359cd26,candidate fires 3/3 healthy windows day-1; warning 2/3; critical 0/3 — candidate/warning thresholds too loose at smoke scale

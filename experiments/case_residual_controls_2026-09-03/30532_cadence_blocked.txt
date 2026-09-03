@@ -1,0 +1,15 @@
+﻿Rows: 6407  loco=30532  failure=2024-04-04 05:00:00  suspect=xtempmotor1_2
+Baseline bins covered: 0/30
+RESIDUAL r_t = I_obs - Ihat(v,a), traction-active only (BASELINE row in-sample ref)
+period                        n      med      p10      p25      p75      p90      IQR P(|r|>30)
+BASELINE 02Apr-02Apr          0  (no matched rows)
+03-Apr                        0  (no matched rows)
+04-Apr pre-fail               0  (no matched rows)
+KS-D vs pooled BASELINE (no p-value):
+  03-Apr                   n=0     D=  nan  <-- n<30, directional only
+  04-Apr pre-fail          n=0     D=  nan  <-- n<30, directional only
+dT = suspect - other5 mean (deg C):
+Rolling hourly residual med/IQR:
+--- cadence ---
+30532_11d: n=6407 med_gap=15.0s p90_gap=60.0s
+37282_10d: n=490188 med_gap=1.0s p90_gap=1.0s

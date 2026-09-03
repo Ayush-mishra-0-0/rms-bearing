@@ -33,8 +33,7 @@ case_42728/telemetry_42728_2026_rds.json.csv
 case_42728/telemetry_42728_raw.csv
 
 # Local monitoring/output state
-monitoring/state/
-reports/
+data/
 
 # Telemetry data: ignore dumps, keep contracts + manifests versioned
 data/raw/

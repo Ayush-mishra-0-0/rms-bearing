@@ -1,0 +1,38 @@
+{
+  "loco": "37282",
+  "input": "C:/Users/CRIS/AppData/Local/Temp/opencode/r37282_slice.parquet",
+  "run": "experiments\\smoke_armA",
+  "model": {
+    "loco": "37282",
+    "purpose": "precursor sensitivity + timestamp/dq robustness (dense)",
+    "onsets": {
+      "candidate": "2024-12-01T11:32:58",
+      "warning": "2024-12-01T11:32:58",
+      "critical": "2024-12-01T11:32:58"
+    },
+    "lead_time_h": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "rules": {
+    "loco": "37282",
+    "purpose": "precursor sensitivity + timestamp/dq robustness (dense)",
+    "onsets": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "lead_time_h": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "note": "research detection only; Critical->withdrawal needs separate operational approval"
+}

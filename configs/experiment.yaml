@@ -1,6 +1,17 @@
-# Single experiment config for v0. Split later if needed.
+# Gold v1 freeze — all arms consume SAME 1-min Gold. Changing features => bump gold_version.
+gold_version: v1
+gold:
+  resample: 1min
+  # Canonical ~28 features (see src/rms_mlstm/features.py GOLD_FEATURES). Same missingness/gap flags for all arms.
+  features: [xtempmotor_max, Temp_Diff_Motor_1, Temp_Diff_Motor_2, Temp_Diff_Motor_3,
+    Temp_Gradient, Temp_Gradient_15min, Normalized_Temp, Cooling_Ineff,
+    xiprim_1, xuprim_1, Current_Vol, Current_Vol_5min, Volt_Imbal, bur_opcurrent_mean,
+    xspeedloco, gpsspeed, ltedemand, lbedemand, mtrcctract1, op_mode,
+    mvcb_on, bbur_any_off, bstb_any_off, bflg_any_off,
+    ThermalFatigue72h, WorkIntegral24h, Vendor, dq_gap]
+
 seed: 42
-run_name: mlstm_iforest_v0
+run_name: bakeoff_goldv1_fixedfusion
 
 data:
   table: dbo.Lotus_loco_process_signals
@@ -9,8 +20,14 @@ data:
   horizon_min: 6
   target: xtempmotor_max    # max of 6 xtempmotor*_*
   covariates: [xspeedloco, xiprim_1, xuprim_1, ltedemand, xtempmotor1_1, xtempmotor2_1, xtempmotor3_1, xtempmotor1_2, xtempmotor2_2, xtempmotor3_2]
-  train_locos: healthy_fleet # 845 locos minus 37282/30532/30751, sampled
-  val_locos: [37282, 30532] # only usable positives, validation only
+  # RIGID SPLIT — failure locos NEVER in train/calib. Test evaluated ONCE.
+  train_locos: healthy_50    # ~50 healthy sampled from 845, model fitting ONLY
+  calib_locos: healthy_20    # 20 held-out healthy, q99/thresholds/FAR ONLY, no failure tuning
+  test_cases:                # per-case purpose, not interchangeable rows
+    - {loco: "37282", purpose: "precursor sensitivity + timestamp/dq robustness (dense)"}
+    - {loco: "30532", purpose: "robustness under sparse telemetry"}
+    - {loco: "30751", purpose: "sequence/cutout precursor validation (rule-engine check)"}
+  test_healthy: healthy_50_unseen  # operational FAR control
 
 model:
   type: mlstm
@@ -29,4 +46,41 @@ iforest:
   n_estimators: 200
   max_samples: 256
   contamination: 0.01
-  threshold_quantile: 0.99  # alarm if score > q99 on healthy val
+  threshold_quantile: 0.99  # alarm if score > q99 on healthy CALIB only
+
+# FIX 1: common calibrated 0-1 scale. Raw arm scores -> ECDF(calib healthy) -> P(anomalous).
+calibration:
+  method: ecdf_healthy  # score01 = fraction of calib-healthy scores <= raw
+  source: calib_locos   # NEVER test failures
+
+# FIX 5: executable alarm contract. Report candidate/warning/critical separately.
+alarm:
+  levels: [candidate, warning, critical]  # candidate=weak, warning=sustained, critical=actionable
+  # onset = first t where score01 >= thr for >= N consecutive mins AND no dip below thr-reset for M mins
+  candidate: {thr: 0.90, N_min: 10, reset_thr: 0.85, M_min: 30}
+  warning: {thr: 0.97, N_min: 20, reset_thr: 0.93, M_min: 30}
+  critical: {thr: 0.99, N_min: 30, reset_thr: 0.97, M_min: 60}
+  lead_time_ref: Owner failure timestamp  # lead = failure_ts - onset; report per level
+
+# FIX 2: PRIMARY fusion = fixed weights frozen BEFORE test. Learned fusion = exploratory only.
+fusion_primary:
+  method: fixed_weighted_mean_01
+  weights: {A_wang: 0.40, B_ae: 0.30, C_mode: 0.15, D_elec: 0.05, R_rules: 0.10}
+  frozen_before_test: true
+fusion_exploratory:
+  method: constrained_logreg_on_synth_plus_2positives
+  status: separate_report_only  # never decides bake-off winner
+
+# FIX 6: Pareto gate, not scalar winner.
+gate:
+  hard_far_per_1000_loco_days: 2.0  # must pass to be deployable
+  primary: median_lead_time_critical_h
+  secondary: [detect_24h, detect_48h, persistence_cusum, cross_vendor_retention]
+
+# Ablation by GROUP (not just top-5) for winner.
+ablation_groups:
+  thermal: [xtempmotor_max, Temp_Diff_Motor_1, Temp_Diff_Motor_2, Temp_Diff_Motor_3, Temp_Gradient, Temp_Gradient_15min, Normalized_Temp, Cooling_Ineff, ThermalFatigue72h]
+  electrical: [xiprim_1, xuprim_1, Current_Vol, Current_Vol_5min, Volt_Imbal, bur_opcurrent_mean]
+  kinematic_mode: [xspeedloco, gpsspeed, ltedemand, lbedemand, mtrcctract1, op_mode, WorkIntegral24h]
+  status: [mvcb_on, bbur_any_off, bstb_any_off, bflg_any_off]
+  exposure: [Vendor, dq_gap]

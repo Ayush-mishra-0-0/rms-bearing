@@ -1,0 +1,38 @@
+{
+  "loco": "37282",
+  "input": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\data\\gold_A\\t37282.parquet",
+  "run": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\experiments\\armA_healthy2",
+  "model": {
+    "loco": "37282",
+    "purpose": "precursor sensitivity + timestamp/dq robustness (dense)",
+    "onsets": {
+      "candidate": "2024-12-01T13:06:00",
+      "warning": "2024-12-02T08:07:00",
+      "critical": "2024-12-02T08:25:00"
+    },
+    "lead_time_h": {
+      "candidate": 207.9,
+      "warning": 188.88333333333333,
+      "critical": 188.58333333333334
+    },
+    "detect_24h": true,
+    "detect_48h": true
+  },
+  "rules": {
+    "loco": "37282",
+    "purpose": "precursor sensitivity + timestamp/dq robustness (dense)",
+    "onsets": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "lead_time_h": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "note": "research detection only; Critical->withdrawal needs separate operational approval"
+}

@@ -1,0 +1,9 @@
+name: rms-bearing
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+    - pyodbc==5.3.0
+    - python-dotenv==1.2.2

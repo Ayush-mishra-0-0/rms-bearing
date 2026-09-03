@@ -1,0 +1,38 @@
+{
+  "loco": "37282-Nov",
+  "input": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\data\\gold_A\\t37282nov.parquet",
+  "run": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\experiments\\armA_healthy2",
+  "model": {
+    "loco": "37282-Nov",
+    "purpose": "operational FAR control",
+    "onsets": {
+      "candidate": "2024-11-01T15:35:00",
+      "warning": "2024-11-01T18:20:00",
+      "critical": null
+    },
+    "lead_time_h": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "rules": {
+    "loco": "37282-Nov",
+    "purpose": "operational FAR control",
+    "onsets": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "lead_time_h": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "note": "research detection only; Critical->withdrawal needs separate operational approval"
+}

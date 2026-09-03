@@ -1,0 +1,57 @@
+﻿Rows: 584127  loco=30385  failure=2024-12-10 05:00:00  suspect=xtempmotor3_2
+Baseline bins covered: 29/30
+RESIDUAL r_t = I_obs - Ihat(v,a), traction-active only (BASELINE row in-sample ref)
+period                        n      med      p10      p25      p75      p90      IQR P(|r|>30)
+BASELINE 01Dec-07Dec     105550     +0.0    -52.3    -12.2    +12.2    +74.7     24.4     0.335
+08-Dec                    10284     +0.0    -43.7    -10.0    +12.0    +75.5     22.0     0.312
+09-Dec                    17400     -0.6    -47.6    -12.2     +8.1    +72.3     20.3     0.312
+10-Dec window-end          5612     -1.7    -78.4    -18.3    +10.0    +72.3     28.3     0.359
+KS-D vs pooled BASELINE (no p-value):
+  08-Dec                   n=10284 D=0.034
+  09-Dec                   n=17400 D=0.047
+  10-Dec window-end        n=5612  D=0.073
+dT = suspect - other5 mean (deg C):
+  BASELINE 01Dec-07Dec     n=105550 dT med=  +0.0 IQR=  0.0
+  08-Dec                   n=10284 dT med=  +0.0 IQR=  0.0
+  09-Dec                   n=17400 dT med=  +0.0 IQR=  0.0
+  10-Dec window-end        n=5612  dT med=  +0.0 IQR=  0.0
+Rolling hourly residual med/IQR:
+  08/12 08:00 n=106   med=   -6.6 IQR=   6.8
+  08/12 09:00 n=588   med=   -9.3 IQR=   6.6
+  08/12 10:00 n=83    med=   -3.2 IQR=   0.5
+  08/12 11:00 n=120   med=   -1.5 IQR=   1.5
+  08/12 12:00 n=16    med=   -5.4 IQR=   0.0
+  08/12 14:00 n=195   med=   -3.2 IQR=   2.4
+  08/12 15:00 n=861   med=   -1.2 IQR=  16.4
+  08/12 16:00 n=1436  med=   +0.7 IQR=  66.7
+  08/12 17:00 n=1120  med=   +3.2 IQR=  15.6
+  08/12 18:00 n=1209  med=   +7.6 IQR=  82.8
+  08/12 19:00 n=1224  med=   +3.4 IQR=  42.5
+  08/12 20:00 n=1022  med=   +0.2 IQR=  26.6
+  08/12 21:00 n=1078  med=   +2.6 IQR=  46.2
+  08/12 22:00 n=944   med=   +2.4 IQR=   9.8
+  08/12 23:00 n=282   med=   -2.4 IQR=   5.9
+  09/12 00:00 n=1622  med=   -2.1 IQR=  12.9
+  09/12 01:00 n=1244  med=   +5.6 IQR=  66.7
+  09/12 02:00 n=1219  med=   +0.2 IQR=  91.1
+  09/12 03:00 n=1175  med=   +2.2 IQR=  98.2
+  09/12 04:00 n=926   med=   +3.2 IQR=  17.6
+  09/12 05:00 n=1023  med=   -1.7 IQR=  19.3
+  09/12 06:00 n=1108  med=   +3.2 IQR=  22.7
+  09/12 07:00 n=1108  med=   -2.9 IQR=  38.8
+  09/12 08:00 n=1023  med=  -10.3 IQR=  44.9
+  09/12 09:00 n=69    med=   -5.1 IQR=  46.6
+  09/12 10:00 n=188   med=   -2.7 IQR=   1.2
+  09/12 16:00 n=902   med=   -2.0 IQR=   2.2
+  09/12 17:00 n=278   med=   -3.2 IQR=   3.4
+  09/12 18:00 n=826   med=   -4.9 IQR=  31.7
+  09/12 19:00 n=1092  med=   -1.0 IQR=  22.0
+  09/12 20:00 n=764   med=   -2.9 IQR=  18.3
+  09/12 21:00 n=1060  med=   +3.2 IQR=  40.3
+  09/12 22:00 n=892   med=   +2.0 IQR=  24.9
+  09/12 23:00 n=877   med=   +6.3 IQR=  13.2
+  10/12 00:00 n=974   med=   -2.7 IQR=  15.1
+  10/12 01:00 n=1082  med=   +6.1 IQR=  25.2
+  10/12 02:00 n=1338  med=   -5.3 IQR=  79.4
+  10/12 03:00 n=852   med=   -3.7 IQR=  54.9
+  10/12 04:00 n=1366  med=   -1.0 IQR=   6.6

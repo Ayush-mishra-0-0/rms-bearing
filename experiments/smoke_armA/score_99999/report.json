@@ -1,0 +1,38 @@
+{
+  "loco": "99999",
+  "input": "C:/Users/CRIS/AppData/Local/Temp/opencode/synth_test.parquet",
+  "run": "experiments\\smoke_armA",
+  "model": {
+    "loco": "99999",
+    "purpose": "operational FAR control",
+    "onsets": {
+      "candidate": "2024-02-01T07:18:00",
+      "warning": "2024-02-01T07:25:00",
+      "critical": "2024-02-01T07:32:00"
+    },
+    "lead_time_h": {
+      "candidate": 2.7,
+      "warning": 2.5833333333333335,
+      "critical": 2.466666666666667
+    },
+    "detect_24h": false,
+    "detect_48h": false
+  },
+  "rules": {
+    "loco": "99999",
+    "purpose": "operational FAR control",
+    "onsets": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "lead_time_h": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "note": "research detection only; Critical->withdrawal needs separate operational approval"
+}

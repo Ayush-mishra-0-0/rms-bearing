@@ -1,0 +1,38 @@
+{
+  "loco": "healthyA-30385",
+  "input": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\data\\gold_A\\test_healthyA.parquet",
+  "run": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\experiments\\armA_healthy2",
+  "model": {
+    "loco": "healthyA-30385",
+    "purpose": "operational FAR control",
+    "onsets": {
+      "candidate": "2024-12-01T15:54:00",
+      "warning": null,
+      "critical": null
+    },
+    "lead_time_h": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "rules": {
+    "loco": "healthyA-30385",
+    "purpose": "operational FAR control",
+    "onsets": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "lead_time_h": {
+      "candidate": null,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "note": "research detection only; Critical->withdrawal needs separate operational approval"
+}

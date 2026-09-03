@@ -1,0 +1,255 @@
+{
+  "timestamp": "2026-09-03T15:36:12",
+  "stage": "train_mlstm_armA",
+  "git_sha": "5445f704ca16",
+  "config_hash": "a279d359cd26",
+  "config": {
+    "gold_version": "v1",
+    "gold": {
+      "resample": "1min",
+      "features": [
+        "xtempmotor_max",
+        "Temp_Diff_Motor_1",
+        "Temp_Diff_Motor_2",
+        "Temp_Diff_Motor_3",
+        "Temp_Gradient",
+        "Temp_Gradient_15min",
+        "Normalized_Temp",
+        "Cooling_Ineff",
+        "xiprim_1",
+        "xuprim_1",
+        "Current_Vol",
+        "Current_Vol_5min",
+        "Volt_Imbal",
+        "bur_opcurrent_mean",
+        "xspeedloco",
+        "gpsspeed",
+        "ltedemand",
+        "lbedemand",
+        "mtrcctract1",
+        "op_mode",
+        "mvcb_on",
+        "bbur_any_off",
+        "bstb_any_off",
+        "bflg_any_off",
+        "ThermalFatigue72h",
+        "WorkIntegral24h",
+        "Vendor",
+        "dq_gap"
+      ]
+    },
+    "seed": 42,
+    "run_name": "bakeoff_goldv1_fixedfusion",
+    "data": {
+      "table": "dbo.Lotus_loco_process_signals",
+      "resample": "1min",
+      "lookback_min": 40,
+      "horizon_min": 6,
+      "target": "xtempmotor_max",
+      "covariates": [
+        "xspeedloco",
+        "xiprim_1",
+        "xuprim_1",
+        "ltedemand",
+        "xtempmotor1_1",
+        "xtempmotor2_1",
+        "xtempmotor3_1",
+        "xtempmotor1_2",
+        "xtempmotor2_2",
+        "xtempmotor3_2"
+      ],
+      "train_locos": "healthy_50",
+      "calib_locos": "healthy_20",
+      "test_cases": [
+        {
+          "loco": "37282",
+          "purpose": "precursor sensitivity + timestamp/dq robustness (dense)"
+        },
+        {
+          "loco": "30532",
+          "purpose": "robustness under sparse telemetry"
+        },
+        {
+          "loco": "30751",
+          "purpose": "sequence/cutout precursor validation (rule-engine check)"
+        }
+      ],
+      "test_healthy": "healthy_50_unseen"
+    },
+    "model": {
+      "type": "mlstm",
+      "hidden_size": 64,
+      "num_layers": 3,
+      "dropout": 0.1,
+      "epochs": 50,
+      "lr": 0.001,
+      "batch_size": 256
+    },
+    "deviation": {
+      "ewma_span": 5,
+      "score": "abs_residual"
+    },
+    "iforest": {
+      "n_estimators": 200,
+      "max_samples": 256,
+      "contamination": 0.01,
+      "threshold_quantile": 0.99
+    },
+    "calibration": {
+      "method": "ecdf_healthy",
+      "source": "calib_locos"
+    },
+    "alarm": {
+      "levels": [
+        "candidate",
+        "warning",
+        "critical"
+      ],
+      "candidate": {
+        "thr": 0.9,
+        "N_min": 10,
+        "reset_thr": 0.85,
+        "M_min": 30
+      },
+      "warning": {
+        "thr": 0.97,
+        "N_min": 20,
+        "reset_thr": 0.93,
+        "M_min": 30
+      },
+      "critical": {
+        "thr": 0.99,
+        "N_min": 30,
+        "reset_thr": 0.97,
+        "M_min": 60
+      },
+      "lead_time_ref": "Owner failure timestamp"
+    },
+    "fusion_primary": {
+      "method": "fixed_weighted_mean_01",
+      "weights": {
+        "A_wang": 0.4,
+        "B_ae": 0.3,
+        "C_mode": 0.15,
+        "D_elec": 0.05,
+        "R_rules": 0.1
+      },
+      "frozen_before_test": true
+    },
+    "fusion_exploratory": {
+      "method": "constrained_logreg_on_synth_plus_2positives",
+      "status": "separate_report_only"
+    },
+    "gate": {
+      "hard_far_per_1000_loco_days": 2.0,
+      "primary": "median_lead_time_critical_h",
+      "secondary": [
+        "detect_24h",
+        "detect_48h",
+        "persistence_cusum",
+        "cross_vendor_retention"
+      ]
+    },
+    "ablation_groups": {
+      "thermal": [
+        "xtempmotor_max",
+        "Temp_Diff_Motor_1",
+        "Temp_Diff_Motor_2",
+        "Temp_Diff_Motor_3",
+        "Temp_Gradient",
+        "Temp_Gradient_15min",
+        "Normalized_Temp",
+        "Cooling_Ineff",
+        "ThermalFatigue72h"
+      ],
+      "electrical": [
+        "xiprim_1",
+        "xuprim_1",
+        "Current_Vol",
+        "Current_Vol_5min",
+        "Volt_Imbal",
+        "bur_opcurrent_mean"
+      ],
+      "kinematic_mode": [
+        "xspeedloco",
+        "gpsspeed",
+        "ltedemand",
+        "lbedemand",
+        "mtrcctract1",
+        "op_mode",
+        "WorkIntegral24h"
+      ],
+      "status": [
+        "mvcb_on",
+        "bbur_any_off",
+        "bstb_any_off",
+        "bflg_any_off"
+      ],
+      "exposure": [
+        "Vendor",
+        "dq_gap"
+      ]
+    }
+  },
+  "gold_version": "v1",
+  "feature_order": [
+    "xtempmotor_max",
+    "xspeedloco",
+    "xiprim_1",
+    "xuprim_1",
+    "ltedemand",
+    "xtempmotor1_1",
+    "xtempmotor2_1",
+    "xtempmotor3_1",
+    "xtempmotor1_2",
+    "xtempmotor2_2",
+    "xtempmotor3_2"
+  ],
+  "train": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\data\\gold_A\\train_healthy.parquet",
+  "train_rows": 14869,
+  "train_seqs": 14824,
+  "calib": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\data\\gold_A\\calib_healthy.parquet",
+  "alarm": {
+    "levels": [
+      "candidate",
+      "warning",
+      "critical"
+    ],
+    "candidate": {
+      "thr": 0.9,
+      "N_min": 10,
+      "reset_thr": 0.85,
+      "M_min": 30
+    },
+    "warning": {
+      "thr": 0.97,
+      "N_min": 20,
+      "reset_thr": 0.93,
+      "M_min": 30
+    },
+    "critical": {
+      "thr": 0.99,
+      "N_min": 30,
+      "reset_thr": 0.97,
+      "M_min": 60
+    },
+    "lead_time_ref": "Owner failure timestamp"
+  },
+  "fusion_primary": {
+    "method": "fixed_weighted_mean_01",
+    "weights": {
+      "A_wang": 0.4,
+      "B_ae": 0.3,
+      "C_mode": 0.15,
+      "D_elec": 0.05,
+      "R_rules": 0.1
+    },
+    "frozen_before_test": true
+  },
+  "seed": 42,
+  "artifacts": [
+    "mlstm.pt",
+    "scaler.json",
+    "calib.json"
+  ]
+}

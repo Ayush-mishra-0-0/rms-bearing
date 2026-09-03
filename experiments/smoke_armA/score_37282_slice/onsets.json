@@ -1,0 +1,12 @@
+{
+  "model": {
+    "candidate": "2024-12-01T11:32:58",
+    "warning": "2024-12-01T11:32:58",
+    "critical": "2024-12-01T11:32:58"
+  },
+  "rules": {
+    "candidate": null,
+    "warning": null,
+    "critical": null
+  }
+}

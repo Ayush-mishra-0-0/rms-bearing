@@ -1,0 +1,38 @@
+{
+  "loco": "30532",
+  "input": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\data\\gold_A\\t30532.parquet",
+  "run": "C:\\Users\\CRIS\\Desktop\\ayush\\rms-bearing\\experiments\\armA_healthy2",
+  "model": {
+    "loco": "30532",
+    "purpose": "robustness under sparse telemetry",
+    "onsets": {
+      "candidate": "2024-04-01T17:38:00",
+      "warning": "2024-04-02T08:47:00",
+      "critical": "2024-04-02T08:48:00"
+    },
+    "lead_time_h": {
+      "candidate": 59.36666666666667,
+      "warning": 44.21666666666667,
+      "critical": 44.2
+    },
+    "detect_24h": true,
+    "detect_48h": false
+  },
+  "rules": {
+    "loco": "30532",
+    "purpose": "robustness under sparse telemetry",
+    "onsets": {
+      "candidate": "2024-04-03T01:08:00",
+      "warning": null,
+      "critical": null
+    },
+    "lead_time_h": {
+      "candidate": 27.866666666666667,
+      "warning": null,
+      "critical": null
+    },
+    "detect_24h": null,
+    "detect_48h": null
+  },
+  "note": "research detection only; Critical->withdrawal needs separate operational approval"
+}
