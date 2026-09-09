@@ -138,6 +138,26 @@ def run(skip_slow=False, no_email=False):
 
     append_history(hb, slow)
 
+    # feed the Locos tab: one row per day (idempotent on re-runs)
+    if not skip_slow and slow.get("active_locos_24h") is not None:
+        import csv
+        loco_csv = REPORTS_DIR / "loco_daily.csv"
+        today = now_local.strftime("%Y-%m-%d")
+        seen = set()
+        if loco_csv.exists():
+            with open(loco_csv, newline="", encoding="utf-8") as fh:
+                for r in csv.DictReader(fh):
+                    seen.add((r.get("day") or "")[:10])
+        if today not in seen:
+            write_header = not loco_csv.exists()
+            with open(loco_csv, "a", newline="", encoding="utf-8") as fh:
+                w = csv.writer(fh)
+                if write_header:
+                    w.writerow(["day", "active_locos", "fitted", "total"])
+                w.writerow([today, slow["active_locos_24h"],
+                            rmsloco.get("fitted"), rmsloco.get("total")])
+            print("appended %s to loco_daily.csv" % today)
+
     # optional terse digest email (issues only)
     if no_email:
         return 0

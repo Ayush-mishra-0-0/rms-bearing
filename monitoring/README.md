@@ -93,3 +93,36 @@ WHERE: Lotus_loco_process_signals_RDSOJson
 
 The full detail lives in `reports/rms_report_YYYY-MM-DD.md`; the daily digest
 email contains only the one-line issue list.
+
+## Live dashboard: Prometheus + Streamlit
+
+`watch.py` stays the alerter. For "always see the flow":
+
+```
+pip install streamlit prometheus_client pandas
+python -m monitoring.exporter            # terminal 1: :8000/metrics (read-only heartbeat)
+prometheus.exe --config.file=monitoring/prometheus.yml   # terminal 2: :9090 (Windows zip, no Docker)
+streamlit run monitoring/dashboard.py     # terminal 3: the board
+```
+
+No-network fallback (stdlib only, already running here):
+
+```
+python -m monitoring.serve               # http://localhost:8501/ (+ /api/status, /metrics)
+```
+
+Sidebar -> Source:
+
+| Source | When to use |
+|---|---|
+| `Auto` (default) | on-prem: Live DB if reachable, else Prometheus, else CSV |
+| `Live DB` | same LAN as SQL Server (`10.77.x`) |
+| `Prometheus` | Streamlit Cloud — set `PROM_URL` secret to your reachable Prometheus |
+| `CSV cache` | offline / no backends — renders `reports/history.csv` + daily report |
+
+Notes:
+
+- The exporter is read-only (never writes `state.json` / `history.csv`).
+- Streamlit Cloud cannot reach `10.77.x` directly — expose Prometheus via
+  Tailscale/ngrok, or remote-write to Grafana Cloud, and set `PROM_URL`.
+- Without any backend the board still renders the CSV cache + latest report.

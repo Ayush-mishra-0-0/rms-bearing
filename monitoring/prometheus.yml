@@ -1,0 +1,14 @@
+# Prometheus scrape config for the RMS exporter.
+# Install Prometheus (Windows zip, no Docker needed):
+#   https://prometheus.io/download/ -> windows-amd64 -> unpack -> copy this file
+#   next to prometheus.exe -> run: prometheus.exe --config.file=prometheus.yml
+# Then open http://localhost:9090 and point the Streamlit dashboard at it
+# (sidebar: Source = Prometheus, URL = http://localhost:9090).
+global:
+  scrape_interval: 60s
+  evaluation_interval: 60s
+
+scrape_configs:
+  - job_name: rms
+    static_configs:
+      - targets: ["localhost:8000"]   # monitoring/exporter.py

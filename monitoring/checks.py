@@ -13,7 +13,10 @@ Every query:
 import os
 from datetime import datetime
 
-import pyodbc
+try:
+    import pyodbc
+except ImportError:  # Streamlit Cloud without ODBC libs: connect() raises CheckError, app still shows CSV cache
+    pyodbc = None
 
 from .config import settings
 
@@ -23,6 +26,8 @@ class CheckError(RuntimeError):
 
 
 def connect():
+    if pyodbc is None:
+        raise CheckError("pyodbc not installed (ODBC driver libs missing)")
     s = settings()
     if not s["db_server"] or not s["db_name"]:
         raise CheckError("DB_SERVER / DB_NAME not set in .env")

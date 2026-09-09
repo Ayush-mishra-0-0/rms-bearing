@@ -1,17 +1,62 @@
 {
   "checks": {
-    "telemetry_advance": {},
-    "telemetry_lag": {},
-    "fault_advance": {},
-    "telemetry_volume": {},
+    "telemetry_advance": {
+      "since": null,
+      "status": "ok",
+      "severity": "CRIT",
+      "where": "Lotus_loco_process_signals_RDSOJson",
+      "last_alerted": null
+    },
+    "telemetry_lag": {
+      "since": null,
+      "status": "ok",
+      "severity": "CRIT",
+      "where": "Lotus_loco_process_signals_RDSOJson",
+      "last_alerted": null
+    },
+    "fault_advance": {
+      "since": "2026-09-09T10:12:05.237065",
+      "status": "failing",
+      "severity": "CRIT",
+      "where": "Lotus_LocoFaultData (clean faulttime)",
+      "last_alerted": "2026-09-09T11:12:07.288163"
+    },
+    "telemetry_volume": {
+      "since": null,
+      "status": "ok",
+      "severity": "WARN",
+      "where": "Lotus_loco_process_signals_RDSOJson",
+      "last_alerted": null
+    },
     "fault_volume": {}
   },
   "skew_samples": [
-    35799.9
+    35799.9,
+    -188997.8,
+    36082.3,
+    36063.2,
+    36050.2,
+    36066.2,
+    36054.2,
+    36068.2,
+    36000.1,
+    35874.1,
+    35775.5,
+    35876.3,
+    36015.4,
+    36052.5,
+    36070.1,
+    36031.4,
+    36050.4,
+    36068.4,
+    36028.4,
+    36076.4,
+    36037.4,
+    36055.4
   ],
-  "last_telemetry_max": "2026-08-12T23:22:09",
-  "last_fault_max": "2026-08-12T02:18:27",
-  "telemetry_no_advance_since": "2026-08-12T13:27:48.004804",
-  "fault_no_advance_since": "2026-08-12T13:27:48.004804",
-  "last_advance_seen": "2026-08-12T13:27:52.253000"
+  "last_telemetry_max": "2026-09-09T21:48:11",
+  "last_fault_max": "2026-09-09T03:36:50",
+  "telemetry_no_advance_since": null,
+  "fault_no_advance_since": "2026-09-09T10:12:05.237065",
+  "last_advance_seen": "2026-09-09T11:47:15.647000"
 }
