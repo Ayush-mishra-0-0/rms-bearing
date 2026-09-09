@@ -15,11 +15,11 @@
       "last_alerted": null
     },
     "fault_advance": {
-      "since": "2026-09-09T10:12:05.237065",
-      "status": "failing",
+      "since": null,
+      "status": "ok",
       "severity": "CRIT",
       "where": "Lotus_LocoFaultData (clean faulttime)",
-      "last_alerted": "2026-09-09T11:12:07.288163"
+      "last_alerted": null
     },
     "telemetry_volume": {
       "since": null,
@@ -52,11 +52,25 @@
     36028.4,
     36076.4,
     36037.4,
-    36055.4
+    36055.4,
+    36061.8,
+    36052.7,
+    36042.7,
+    36059.7,
+    36019.2,
+    35952.6,
+    35854.8,
+    35908.7,
+    36014.7,
+    36033.7,
+    35964.5,
+    35867.5,
+    35857.6,
+    35817.6
   ],
-  "last_telemetry_max": "2026-09-09T21:48:11",
-  "last_fault_max": "2026-09-09T03:36:50",
+  "last_telemetry_max": "2026-09-09T22:59:13",
+  "last_fault_max": "2026-09-10T12:51:00",
   "telemetry_no_advance_since": null,
-  "fault_no_advance_since": "2026-09-09T10:12:05.237065",
-  "last_advance_seen": "2026-09-09T11:47:15.647000"
+  "fault_no_advance_since": "2026-09-09T12:57:05.162300",
+  "last_advance_seen": "2026-09-09T13:02:15.360000"
 }

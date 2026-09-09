@@ -83,16 +83,22 @@ def telemetry_heartbeat(conn):
 
 
 def fault_heartbeat(conn):
-    """Legacy fault table is sparse but indexed on faulttime -> cheap heartbeat."""
+    """Legacy fault table is sparse but indexed on faulttime -> cheap heartbeat.
+
+    Upper bound now+1d (not GETDATE()): loco device clocks run ahead of the
+    server clock (learned skew ~10h), so rows arrive stamped hours in the
+    future. Bounding by GETDATE() hides fresh rows and causes false CRITs
+    when the server clock passes the last 'clean' faulttime. Lower bound
+    -7d keeps out the known year-2044 garbage rows."""
     max_ft = _fetch(
         conn,
         "SELECT MAX(faulttime) FROM dbo.Lotus_LocoFaultData WITH (NOLOCK) "
-        "WHERE faulttime <= GETDATE() AND faulttime >= DATEADD(day, -90, GETDATE())",
+        "WHERE faulttime <= DATEADD(day, 1, GETDATE()) AND faulttime >= DATEADD(day, -7, GETDATE())",
     )[0]
     rows_24h = _fetch(
         conn,
         "SELECT COUNT_BIG(*) FROM dbo.Lotus_LocoFaultData WITH (NOLOCK) "
-        "WHERE faulttime >= DATEADD(day, -1, GETDATE()) AND faulttime <= GETDATE()",
+        "WHERE faulttime >= DATEADD(day, -1, GETDATE()) AND faulttime <= DATEADD(day, 1, GETDATE())",
     )[0]
     return {"max_fault_time": max_ft, "rows_24h": rows_24h}
 
